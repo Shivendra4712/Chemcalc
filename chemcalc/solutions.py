@@ -40,3 +40,13 @@ def ph_weak_acid(conc: float, ka: float) -> float:
 def ph_buffer(pka: float, base_conc: float, acid_conc: float) -> float:
     """Henderson-Hasselbalch: pH = pKa + log10([A-]/[HA])."""
     return pka + math.log10(base_conc / acid_conc)
+
+
+def ph_strong_base(conc: float, hydroxides: int = 1) -> float:
+    return 14.0 - (-math.log10(conc * hydroxides))
+
+
+def ph_weak_base(conc: float, kb: float) -> float:
+    """Exact quadratic solution of Kb = x^2 / (C - x), x = [OH-]."""
+    x = (-kb + math.sqrt(kb ** 2 + 4 * kb * conc)) / 2
+    return 14.0 + math.log10(x)

@@ -1,6 +1,7 @@
 """Command line + interactive menu for ChemCalc."""
 import argparse
 import sys
+from .elements import ATOMIC_MASSES
 from . import (molar_mass, percent_composition, balance, dilution,
                ph_strong_acid, ph_weak_acid, ph_buffer, ideal_gas, molarity)
 
@@ -61,6 +62,7 @@ def main(argv=None):
     sub.add_parser("mass").add_argument("formula")
     sub.add_parser("composition").add_argument("formula")
     sub.add_parser("balance").add_argument("equation")
+    sub.add_parser("element").add_argument("symbol")
     g = sub.add_parser("gas")
     for k in "pvnt":
         g.add_argument(f"-{k}", type=float)
@@ -78,6 +80,12 @@ def main(argv=None):
                 print(f"{el}: {pc:.2f}%")
         elif a.cmd == "balance":
             print(balance(a.equation))
+        elif a.cmd == "element":
+            from .periodic import get_element, electron_configuration
+            e = get_element(a.symbol)
+            print(f"{e.name} ({e.symbol})  Z={e.z}  mass={ATOMIC_MASSES[e.symbol]}  "
+                  f"EN={e.electronegativity}  group {e.group}, period {e.period}  [{e.category}]")
+            print("Configuration:", electron_configuration(e.z, short=True))
         elif a.cmd == "gas":
             print(ideal_gas(a.p, a.v, a.n, a.t))
         elif a.cmd == "dilute":

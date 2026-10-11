@@ -1,4 +1,5 @@
 """ChemCalc - a small computational chemistry calculator toolkit."""
+__version__ = "2.0.0"
 from .formula import parse_formula, molar_mass, percent_composition
 from .balancer import balance
 from .solutions import (molarity, dilution, ph_from_h, ph_strong_acid,

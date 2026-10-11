@@ -45,3 +45,20 @@ def consecutive(a0: float, k1: float, k2: float, t):
     else:
         b = a0 * k1 / (k2 - k1) * (np.exp(-k1 * t) - np.exp(-k2 * t))
     return a, b, a0 - a - b
+
+
+def fit_order(t, conc):
+    """Find the reaction order from concentration-vs-time data.
+    Linear fits: [A] vs t (0th), ln[A] vs t (1st), 1/[A] vs t (2nd).
+    Returns (best_order, {order: {'k':..., 'r2':...}})."""
+    t = np.asarray(t, dtype=float)
+    c = np.asarray(conc, dtype=float)
+    if len(t) < 3 or np.any(c <= 0):
+        raise ValueError("Need at least 3 points with positive concentrations")
+    out = {}
+    for order, y in ((0, c), (1, np.log(c)), (2, 1.0 / c)):
+        slope, _ = np.polyfit(t, y, 1)
+        r2 = np.corrcoef(t, y)[0, 1] ** 2
+        out[order] = {"k": float(slope if order == 2 else -slope), "r2": float(r2)}
+    best = max(out, key=lambda o: out[o]["r2"])
+    return best, out

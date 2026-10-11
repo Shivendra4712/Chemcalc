@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chemcalc"
+version = "2.0.0"
+description = "Computational chemistry toolkit: calculators, simulations and a Streamlit app"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Shivendra Pratap Singh" }]
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+app = ["streamlit>=1.40", "plotly>=5.18", "pandas>=2.0"]
+chem = ["rdkit>=2023.9"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+chemcalc = "chemcalc.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["chemcalc*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

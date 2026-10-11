@@ -34,8 +34,8 @@ def _nullspace(M):
     return basis
 
 
-def balance(equation: str) -> str:
-    """'Fe + O2 -> Fe2O3'  ->  '4 Fe + 3 O2 -> 2 Fe2O3'"""
+def balance_species(equation: str):
+    """Return (reactants, products, coefficients) for an unbalanced equation."""
     sep = "->" if "->" in equation else "=" if "=" in equation else None
     if sep is None:
         raise ValueError("Use '->' between reactants and products")
@@ -59,7 +59,16 @@ def balance(equation: str) -> str:
     if any(x <= 0 for x in ints):
         raise ValueError("No valid positive balance (check the species)")
     g = reduce(gcd, ints)
-    ints = [x // g for x in ints]
-    fmt = lambda names, co: " + ".join(f"{n} {s}" if n != 1 else s
-                                       for n, s in zip(co, names))
-    return f"{fmt(reac, ints[:len(reac)])} -> {fmt(prod, ints[len(reac):])}"
+    return reac, prod, [x // g for x in ints]
+
+
+def format_equation(reac, prod, coeffs) -> str:
+    n = len(reac)
+    fmt = lambda names, co: " + ".join(f"{k} {s}" if k != 1 else s
+                                       for k, s in zip(co, names))
+    return f"{fmt(reac, coeffs[:n])} -> {fmt(prod, coeffs[n:])}"
+
+
+def balance(equation: str) -> str:
+    """'Fe + O2 -> Fe2O3'  ->  '4 Fe + 3 O2 -> 2 Fe2O3'"""
+    return format_equation(*balance_species(equation))

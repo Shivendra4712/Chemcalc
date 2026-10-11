@@ -1,0 +1,6 @@
+@echo off
+echo Installing requirements (first run only)...
+python -m pip install -r requirements.txt
+echo Starting ChemCalc...
+python -m streamlit run app.py
+pause
