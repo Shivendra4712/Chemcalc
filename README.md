@@ -8,7 +8,7 @@ A Python toolkit **and** a dark-themed Streamlit web app with interactive Plotly
 stoichiometry, solutions, gases, thermodynamics, equilibrium, electrochemistry, titration, kinetics,
 molecular simulation, the periodic table and drug-likeness analysis.
 
-> **Live demo:** _add your Streamlit Cloud link here after deploying_
+> **Live demo:** (https://chemcalcgitcdchemcalc-5vxdveckvardaqtsrbg8fm.streamlit.app/)
 
 ## ✨ Features
 
